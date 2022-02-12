@@ -12,13 +12,38 @@ var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+app.set("view engine", "pug");
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// app.use(function (req, res, next) {
+//   console.log("A");
+//   next();
+// });
+
+// 啟用 session
+const expressSession = require("express-session");
+let FileStore = require("session-file-store")(expressSession);
+app.use(
+  expressSession({
+    store: new FileStore({
+      path: path.join(__dirname, "sessions"),
+    }),
+    secret: "keyboard cat",
+    // secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// app.use(function (req, res, next) {
+//   console.log("B");
+//   next();
+// });
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

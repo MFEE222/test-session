@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  p #{whois}, Welcome to  #{title}
+  form(action='/login' method='POST')
+    label(for='who-is') Please enter your name.
+    input#who-is(type='text' name='who' value='')
+    button(type='submit') Submit
+  
